@@ -1,0 +1,1367 @@
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    background: #12070e;
+    color: #ffdce9;
+}
+
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+.loading-screen {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #321523 0%,
+            #180a11 45%,
+            #0b0508 100%
+        );
+
+    z-index: 1000;
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+
+/* =========================
+   TERMINAL
+========================= */
+
+.terminal {
+    width: min(90%, 600px);
+
+    font-family: "DM Mono", monospace;
+    font-size: 15px;
+    line-height: 2;
+
+    padding: 30px;
+
+    border-left: 1px solid rgba(255, 180, 210, 0.2);
+
+    box-shadow:
+        0 0 50px rgba(255, 100, 160, 0.08);
+}
+
+
+/* =========================
+   TERMINAL LINES
+========================= */
+
+.terminal-line {
+    opacity: 0;
+
+    color: #dca4b9;
+
+    transform: translateY(5px);
+
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+.terminal-line.visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* tiny terminal cursor */
+
+.terminal-line::after {
+    content: "";
+}
+
+
+/* =========================
+   SYSTEM READY
+========================= */
+
+.system-ready {
+    margin-top: 25px;
+
+    opacity: 0;
+
+    transform: translateY(10px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+.system-ready.visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+.system-ready p {
+    color: #f2bfd1;
+}
+
+.system-ready .welcome {
+    margin-top: 5px;
+
+    color: #ffb4ce;
+
+    font-size: 18px;
+}
+
+
+/* =========================
+   ENTER BUTTON
+========================= */
+
+#enterButton {
+    margin-top: 25px;
+
+    padding: 10px 24px;
+
+    background: transparent;
+
+    border: 1px solid #e59ab7;
+
+    color: #ffdce9;
+
+    font-family: "DM Mono", monospace;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#enterButton:hover {
+    background: #e59ab7;
+
+    color: #180a11;
+
+    box-shadow:
+        0 0 20px rgba(229, 154, 183, 0.4);
+}
+
+
+/* =========================
+   MAIN WEBSITE
+========================= */
+
+.main-website {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0f5,
+            #ffdce9
+        );
+
+    color: #542334;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 1s ease;
+}
+
+.main-website.visible {
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+.main-website h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(45px, 10vw, 80px);
+
+    font-weight: 500;
+}
+
+.main-website p {
+    margin-top: 10px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: 22px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .terminal {
+        padding: 20px;
+
+        font-size: 13px;
+    }
+
+    .system-ready .welcome {
+        font-size: 16px;
+    }
+
+}
+/* =========================
+   MEMORY GAME
+========================= */
+
+.memory-section {
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 60px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.small-heading {
+    font-family: "DM Mono", monospace;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    color: #b76b88;
+
+    margin-bottom: 10px;
+}
+
+.memory-section h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(40px, 8vw, 65px);
+
+    font-weight: 500;
+
+    color: #542334;
+}
+
+.game-instruction {
+    margin-top: 5px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: 21px;
+
+    color: #8c5268;
+}
+
+
+/* =========================
+   GAME BOARD
+========================= */
+
+.game-board {
+    width: min(92vw, 500px);
+
+    margin-top: 40px;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.memory-card {
+    aspect-ratio: 1 / 1;
+
+    perspective: 800px;
+
+    cursor: pointer;
+}
+
+.card-inner {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    transform-style: preserve-3d;
+
+    transition: transform 0.5s ease;
+}
+
+.memory-card.flipped .card-inner,
+.memory-card.matched .card-inner {
+    transform: rotateY(180deg);
+}
+
+
+/* =========================
+   CARD SIDES
+========================= */
+
+.card-front,
+.card-back {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 14px;
+
+    backface-visibility: hidden;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* FRONT */
+
+.card-front {
+    background:
+        linear-gradient(
+            135deg,
+            #f7a8c4,
+            #e889aa
+        );
+
+    border: 2px solid rgba(255,255,255,0.7);
+
+    box-shadow:
+        0 8px 20px rgba(120, 45, 75, 0.12);
+
+    font-size: 30px;
+
+    color: white;
+}
+
+
+/* BACK */
+
+.card-back {
+    background: #fff7fa;
+
+    transform: rotateY(180deg);
+
+    border: 2px solid #f1c1d2;
+
+    box-shadow:
+        0 8px 20px rgba(120, 45, 75, 0.08);
+
+    font-size: 35px;
+}
+
+
+/* =========================
+   MATCHED CARDS
+========================= */
+
+.memory-card.matched {
+    cursor: default;
+}
+
+.memory-card.matched .card-back {
+    box-shadow:
+        0 0 20px rgba(226, 137, 169, 0.45);
+}
+
+
+/* =========================
+   GAME STATUS
+========================= */
+
+.game-status {
+    margin-top: 25px;
+
+    font-family: "DM Mono", monospace;
+
+    font-size: 13px;
+
+    color: #9b6077;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .game-board {
+        gap: 9px;
+    }
+
+    .memory-section {
+        padding-top: 45px;
+    }
+
+}
+/* =========================
+   MEMORY PHOTOS
+========================= */
+
+.card-back img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+
+    display: block;
+}
+/* =========================
+   MATCH CELEBRATION
+========================= */
+
+.memory-card.just-matched {
+    animation: memoryPop 0.5s ease;
+}
+
+@keyframes memoryPop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.memory-card.matched .card-back {
+    border: 2px solid #e89ab8;
+
+    box-shadow:
+        0 0 12px rgba(232, 154, 184, 0.35),
+        0 0 30px rgba(232, 154, 184, 0.18);
+}
+
+
+/* =========================
+   GAME COMPLETION
+========================= */
+
+.game-complete-message {
+    margin-top: 25px;
+
+    opacity: 0;
+
+    transform: translateY(10px);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+}
+
+.game-complete-message.visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+.game-complete-message p {
+    font-family: "Dancing Script", cursive;
+
+    font-size: 24px;
+
+    color: #8c5268;
+}
+
+.continue-button {
+    margin-top: 15px;
+
+    padding: 12px 28px;
+
+    border: 1px solid #d889a8;
+
+    background: transparent;
+
+    color: #8c5268;
+
+    font-family: "DM Mono", monospace;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.continue-button:hover {
+    background: #d889a8;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+/* =========================
+   SECRET UNLOCK
+========================= */
+
+.secret-section {
+    min-height: 100vh;
+
+    width: 100%;
+
+    padding: 60px 20px;
+
+    display: none;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #fff5f8,
+            #ffdce9
+        );
+}
+
+.secret-section.visible {
+    display: flex;
+}
+
+.lock-icon {
+    font-size: 45px;
+
+    margin-bottom: 15px;
+
+    animation: lockFloat 2s ease-in-out infinite;
+}
+
+@keyframes lockFloat {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+}
+
+.secret-section h1 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(38px, 8vw, 60px);
+
+    font-weight: 500;
+
+    color: #542334;
+}
+
+.secret-question {
+    max-width: 500px;
+
+    margin-top: 15px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: 23px;
+
+    color: #8c5268;
+}
+
+.secret-input-area {
+    width: min(90%, 400px);
+
+    margin-top: 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+#secretAnswer {
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border: 1px solid #e4a1ba;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: rgba(255,255,255,0.7);
+
+    color: #542334;
+
+    font-family: "DM Mono", monospace;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+#secretAnswer:focus {
+    box-shadow:
+        0 0 15px rgba(228, 161, 186, 0.3);
+}
+
+#verifyButton {
+    padding: 13px 25px;
+
+    border: 1px solid #d889a8;
+
+    background: #d889a8;
+
+    color: white;
+
+    border-radius: 8px;
+
+    font-family: "DM Mono", monospace;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#verifyButton:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(216, 137, 168, 0.25);
+}
+
+.secret-message {
+    min-height: 25px;
+
+    margin-top: 20px;
+
+    font-family: "DM Mono", monospace;
+
+    font-size: 13px;
+
+    color: #8c5268;
+}
+/* =========================
+   LETTER
+========================= */
+
+.letter-section {
+    min-height: 100vh;
+
+    width: 100%;
+
+    padding: 60px 20px;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff4f8,
+            #ffdce9
+        );
+}
+
+.letter-section.visible {
+    display: flex;
+}
+
+.letter-card {
+    width: min(92%, 700px);
+
+    padding: 50px 45px;
+
+    background: #fffafa;
+
+    border: 1px solid #f1c5d5;
+
+    box-shadow:
+        0 20px 60px rgba(125, 57, 82, 0.12);
+
+    position: relative;
+}
+
+.letter-flower {
+    text-align: center;
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+}
+
+.letter-date {
+    text-align: center;
+
+    font-family: "DM Mono", monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    color: #b77a91;
+
+    text-transform: uppercase;
+}
+
+.letter-card h1 {
+    margin-top: 30px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: clamp(40px, 8vw, 55px);
+
+    font-weight: 500;
+
+    color: #542334;
+}
+
+.letter-text {
+    margin-top: 25px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 20px;
+
+    line-height: 1.8;
+
+    color: #613747;
+}
+
+.letter-text p {
+    margin-bottom: 22px;
+}
+
+.letter-signature {
+    margin-top: 30px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: 25px;
+
+    line-height: 1.4;
+
+    color: #8c5268;
+}
+
+.letter-continue {
+    display: block;
+
+    margin: 35px auto 0;
+
+    padding: 12px 25px;
+
+    border: 1px solid #d889a8;
+
+    background: transparent;
+
+    color: #8c5268;
+
+    font-family: "DM Mono", monospace;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.letter-continue:hover {
+    background: #d889a8;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   MOBILE LETTER
+========================= */
+
+@media (max-width: 600px) {
+
+    .letter-card {
+        padding: 35px 25px;
+    }
+
+    .letter-text {
+        font-size: 18px;
+        line-height: 1.7;
+    }
+
+}
+/* =========================
+   MUSIC BUTTON
+========================= */
+
+.music-button {
+    position: fixed;
+
+    bottom: 20px;
+    right: 20px;
+
+    z-index: 1000;
+
+    padding: 10px 15px;
+
+    border: 1px solid #d889a8;
+
+    border-radius: 20px;
+
+    background: rgba(255, 250, 252, 0.9);
+
+    color: #8c5268;
+
+    font-family: "DM Mono", monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 15px rgba(120, 45, 75, 0.1);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.music-button:hover {
+    transform: translateY(-2px);
+
+    background: #fff0f5;
+}
+/* =========================
+   BIRTHDAY CAKE
+========================= */
+
+.cake-section {
+    min-height: 100vh;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #fff7fa,
+            #ffd9e7
+        );
+
+    overflow: hidden;
+}
+
+.cake-section.visible {
+    display: flex;
+}
+
+.cake-content {
+    width: 100%;
+    max-width: 800px;
+}
+
+.cake-small-text {
+    font-family: "DM Mono", monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    color: #b77a91;
+}
+
+.cake-content h1 {
+    margin-top: 15px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: clamp(40px, 8vw, 65px);
+
+    font-weight: 500;
+
+    color: #542334;
+}
+
+.blow-instruction {
+    margin-top: 10px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 21px;
+
+    color: #8c5268;
+}
+
+.cake-area {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-end;
+
+    gap: 15px;
+
+    margin-top: 55px;
+}
+
+.cake {
+    position: relative;
+
+    width: 300px;
+
+    height: 240px;
+}
+
+.cake-top {
+    position: absolute;
+
+    bottom: 125px;
+
+    left: 25px;
+
+    width: 250px;
+
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: #ffd6e4;
+
+    border: 2px solid #e7a6bb;
+
+    z-index: 2;
+}
+
+.cake-body {
+    position: absolute;
+
+    bottom: 35px;
+
+    left: 25px;
+
+    width: 250px;
+
+    height: 105px;
+
+    border-radius: 15px 15px 25px 25px;
+
+    background: #f8b9cf;
+
+    border: 2px solid #e29bb5;
+
+    z-index: 1;
+}
+
+.cake-decoration {
+    position: absolute;
+
+    bottom: 28px;
+
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 24px;
+
+    letter-spacing: 10px;
+
+    color: #fff;
+}
+
+.cake-plate {
+    position: absolute;
+
+    bottom: 20px;
+
+    left: 5px;
+
+    width: 290px;
+
+    height: 25px;
+
+    border-radius: 50%;
+
+    background: #fff4f8;
+
+    border: 2px solid #e6b0c3;
+}
+
+
+/* =========================
+   19 CANDLES
+========================= */
+
+.candles {
+    position: absolute;
+
+    bottom: 150px;
+
+    left: 35px;
+
+    width: 230px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    z-index: 5;
+}
+
+.candle {
+    position: relative;
+
+    width: 9px;
+
+    height: 45px;
+
+    border-radius: 3px;
+
+    background: #fff;
+
+    border: 1px solid #d88ca7;
+}
+
+.candle span {
+    position: absolute;
+
+    left: 50%;
+
+    top: -16px;
+
+    transform: translateX(-50%);
+
+    width: 10px;
+
+    height: 15px;
+
+    border-radius: 50% 50% 50% 50%;
+
+    background: #ffb35c;
+
+    box-shadow:
+        0 0 10px rgba(255, 179, 92, 0.8);
+
+    animation: flameFlicker 0.8s infinite alternate;
+}
+
+@keyframes flameFlicker {
+
+    from {
+        transform:
+            translateX(-50%)
+            scale(0.9);
+    }
+
+    to {
+        transform:
+            translateX(-50%)
+            scale(1.1);
+    }
+
+}
+
+
+/* Flames go out */
+
+.candle.blown span {
+    opacity: 0;
+
+    transform:
+        translateX(-50%)
+        scale(0);
+}
+
+
+/* =========================
+   LILIES
+========================= */
+
+.lily {
+    font-size: 45px;
+
+    animation: lilyFloat 3s ease-in-out infinite;
+}
+
+.lily-right {
+    animation-delay: 1s;
+}
+
+@keyframes lilyFloat {
+
+    0%, 100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(4deg);
+    }
+
+}
+
+
+/* =========================
+   WISH MESSAGE
+========================= */
+
+.wish-message {
+    min-height: 40px;
+
+    margin-top: 25px;
+
+    font-family: "Dancing Script", cursive;
+
+    font-size: 30px;
+
+    color: #8c5268;
+}
+
+
+/* =========================
+   CELEBRATION
+========================= */
+
+.cake-section.celebrating {
+    animation: celebrationPulse 0.7s ease;
+}
+
+@keyframes celebrationPulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .cake-area {
+        transform: scale(0.85);
+    }
+
+    .lily {
+        font-size: 32px;
+    }
+
+}
+/* =========================
+   REALISTIC LILY FLOWERS
+========================= */
+
+.real-lily {
+    position: relative;
+    width: 75px;
+    height: 75px;
+    transform: rotate(-8deg);
+}
+
+.lily-right .real-lily {
+    transform: rotate(8deg);
+}
+
+/* petals */
+
+.real-lily span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    width: 30px;
+    height: 58px;
+
+    transform-origin: 50% 100%;
+
+    border-radius: 70% 70% 45% 45%;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #fff7fb 0%,
+            #ffd7e7 55%,
+            #f2a9c5 100%
+        );
+
+    border: 1px solid #e9a2bd;
+
+    box-shadow:
+        inset 0 0 8px rgba(255,255,255,0.7);
+}
+
+/* six lily petals */
+
+.real-lily span:nth-child(1) {
+    transform:
+        translate(-50%, -100%)
+        rotate(0deg);
+}
+
+.real-lily span:nth-child(2) {
+    transform:
+        translate(-50%, -100%)
+        rotate(60deg);
+}
+
+.real-lily span:nth-child(3) {
+    transform:
+        translate(-50%, -100%)
+        rotate(120deg);
+}
+
+.real-lily span:nth-child(4) {
+    transform:
+        translate(-50%, -100%)
+        rotate(180deg);
+}
+
+.real-lily span:nth-child(5) {
+    transform:
+        translate(-50%, -100%)
+        rotate(240deg);
+}
+
+.real-lily span:nth-child(6) {
+    transform:
+        translate(-50%, -100%)
+        rotate(300deg);
+}
+
+/* lily center */
+
+.real-lily i {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: #f4c84a;
+
+    box-shadow:
+        0 0 5px rgba(244,200,74,0.6);
+
+    z-index: 10;
+}
+
+/* little stamens */
+
+.real-lily i::before,
+.real-lily i::after {
+    content: "";
+
+    position: absolute;
+
+    width: 4px;
+    height: 20px;
+
+    background: #d89b38;
+
+    border-radius: 5px;
+
+    left: 50%;
+    bottom: 5px;
+
+    transform-origin: bottom;
+}
+
+.real-lily i::before {
+    transform: translateX(-50%) rotate(-35deg);
+}
+
+.real-lily i::after {
+    transform: translateX(-50%) rotate(35deg);
+}
